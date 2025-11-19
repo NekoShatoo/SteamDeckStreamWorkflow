@@ -1,8 +1,7 @@
 # SteamDeck Stream Workflow
 
 This project enhances the display experience of Sunshine streaming on SteamDeck by adjusting the output resolution for a cleaner and more optimal view on an iPad.
-
-![Preview](https://github.com/user-attachments/assets/f41f7969-cbce-4b51-abfc-2fd8ce122cdf)
+![IMG_9878_small](https://github.com/user-attachments/assets/33ad164d-e661-4ab1-8839-2634f2466e80)
 
 ---
 
