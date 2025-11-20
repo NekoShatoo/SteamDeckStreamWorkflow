@@ -152,5 +152,9 @@ Then update the mode name inside `ResetMainDisplay.sh` accordingly.
 
    (You can create shortcuts for these on the desktop.)
 
+9.How to switch Plasma session to Wayland on a Steam Deck
+
+https://www.reddit.com/r/SteamDeck/comments/1myxg24/how_to_switch_plasma_session_to_wayland_on_a/
+
 ---
 
