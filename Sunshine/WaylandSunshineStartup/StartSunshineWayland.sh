@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-# Exit if the current session is not running under Wayland
-if [ "$XDG_SESSION_TYPE" != "wayland" ]; then
-    echo "This script only runs under Wayland. Exiting."
-    exit 1
-fi
-
 ### Configuration ↓↓↓
 
 # The desktop login user
