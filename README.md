@@ -112,7 +112,7 @@ xrandr
 
 Then update the mode name inside `ResetMainDisplay.sh` accordingly.
 
----
+---   
 
 ## Additional Information
 
@@ -125,6 +125,32 @@ Then update the mode name inside `ResetMainDisplay.sh` accordingly.
    * Display returns to normal when putting the SteamDeck to sleep
    * Display resets automatically after reboot
      This prevents accidental black-screen scenarios.
+
+5. If you want to use **Wayland** as the display backend for some purpose, just run **StartSunshineWayland.sh** with sudo inside the “WaylandSunshineStartup” folder I provided, and Sunshine will launch under Wayland.
+
+6. Under Wayland, **SunshineDisplay.sh** and **ResetMainDisplay.sh** follow a different code path, so be careful to modify the correct places.
+
+7. Your **.xprofile** will **not work** under **Wayland**. To add virtual resolutions, please add kernel boot parameters as follows:
+
+   1. Edit ``/etc/default/grub``
+   2. Find the line containing ``RUB_CMDLINE_LINUX_DEFAULT=``. Add a space at the end, then append the resolution you want.
+
+      Example:
+      ``GRUB_CMDLINE_LINUX_DEFAULT="someaa bb cc video=eDP-1:1600x1200@120"``
+
+      Note: On Wayland, you do **not** need to swap width and height.
+   3. Run ``sudo update-grub``
+   4. If there are no errors, reboot.
+
+8. If you want your Steam Deck to automatically boot into Wayland desktop mode, run:
+
+   ``steamos-session-select plasma-wayland-persistent``
+
+   If you want to return to Game Mode, run:
+
+   ``steamos-session-select gamescope``
+
+   (You can create shortcuts for these on the desktop.)
 
 ---
 
