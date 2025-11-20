@@ -1,44 +1,50 @@
 #!/usr/bin/env bash
 
-### 配置区 ↓↓↓
+# Exit if the current session is not running under Wayland
+if [ "$XDG_SESSION_TYPE" != "wayland" ]; then
+    echo "This script only runs under Wayland. Exiting."
+    exit 1
+fi
 
-# 桌面登录的用户
+### Configuration ↓↓↓
+
+# The desktop login user
 USER_NAME="deck"
 USER_UID=1000
 
-# DBus：指向桌面会话
+# DBus: points to the desktop session
 DBUS_ADDR="unix:path=/run/user/${USER_UID}/bus"
 
-# Sunshine 日志（你不爽可以改到别的地方）
+# Sunshine log file (change it if you don't like it)
 LOG_FILE="/var/log/sunshine.log"
 
-# bwrap 的路径（按你之前的脚本来）
+# Path to bwrap (same as your previous script)
 BWRAP_PATH="./bwrap"
 
-# flatpak 的 Sunshine ID
+# Flatpak Sunshine App ID
 APP_ID="dev.lizardbyte.app.Sunshine"
 
-### 配置区 ↑↑↑
+### Configuration ↑↑↑
 
 
 set -e
 
-# 确保日志文件存在并有权限
+# Ensure log file exists and has proper permissions
 mkdir -p "$(dirname "$LOG_FILE")"
 touch "$LOG_FILE"
 chmod 644 "$LOG_FILE"
 
-# bwrap 权限（你之前就是这么干的）
+# bwrap permissions (same as before)
 if [ -f "$BWRAP_PATH" ]; then
     chown 0:0 "$BWRAP_PATH"
     chmod u+s "$BWRAP_PATH"
 fi
 
-# 给 root 进程准备音频等环境（Sunshine 会用到）
+# Prepare audio and other environment variables for root (Sunshine needs them)
 export PULSE_SERVER="unix:/run/user/${USER_UID}/pulse/native"
 export FLATPAK_BWRAP="${BWRAP_PATH}"
 
-# 如果 Sunshine 没在 root 身份下跑，就启动一个
+# If Sunshine is not running as root, start it
 if ! pgrep -u root -x sunshine >/dev/null 2>&1; then
     flatpak run --socket=wayland "$APP_ID" >>"$LOG_FILE" 2>&1 &
 fi
@@ -63,9 +69,7 @@ notify_sunshine() {
         0 >/dev/null
 }
 
-
-
-# 监控日志：只看包含 CLIENT CONNECTED / CLIENT DISCONNECTED 的行
+# Monitor the log and only process CLIENT CONNECTED / CLIENT DISCONNECTED lines
 tail -F -n0 "$LOG_FILE" | \
 grep --line-buffered -E 'CLIENT (CONNECTED|DISCONNECTED)' | \
 while IFS= read -r line; do
